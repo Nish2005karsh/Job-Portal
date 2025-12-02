@@ -16,7 +16,7 @@ const isResume = true;
 const Profile = () => {
     useGetAppliedJobs();
     const [open, setOpen] = useState(false);
-    const {user} = useSelector(store=>store.auth);
+    const { user } = useSelector(store => store.auth);
 
     return (
         <div>
@@ -58,13 +58,41 @@ const Profile = () => {
                         isResume ? <a target='blank' href={user?.profile?.resume} className='text-blue-500 w-full hover:underline cursor-pointer'>{user?.profile?.resumeOriginalName}</a> : <span>NA</span>
                     }
                 </div>
+                <div className='my-5'>
+                    <h1 className='font-bold text-lg'>Experience</h1>
+                    {
+                        user?.profile?.experience?.length > 0 ? (
+                            user.profile.experience.map((exp, index) => (
+                                <div key={index} className='my-2'>
+                                    <h2 className='font-semibold'>{exp.title} at {exp.company}</h2>
+                                    <p className='text-sm text-gray-600'>{exp.startDate?.split("T")[0]} - {exp.endDate?.split("T")[0]}</p>
+                                    <p>{exp.description}</p>
+                                </div>
+                            ))
+                        ) : <span>NA</span>
+                    }
+                </div>
+                <div className='my-5'>
+                    <h1 className='font-bold text-lg'>Education</h1>
+                    {
+                        user?.profile?.education?.length > 0 ? (
+                            user.profile.education.map((edu, index) => (
+                                <div key={index} className='my-2'>
+                                    <h2 className='font-semibold'>{edu.degree} from {edu.institution}</h2>
+                                    <p className='text-sm text-gray-600'>{edu.startDate?.split("T")[0]} - {edu.endDate?.split("T")[0]}</p>
+                                    <p>{edu.description}</p>
+                                </div>
+                            ))
+                        ) : <span>NA</span>
+                    }
+                </div>
             </div>
             <div className='max-w-4xl mx-auto bg-white rounded-2xl'>
                 <h1 className='font-bold text-lg my-5'>Applied Jobs</h1>
                 {/* Applied Job Table   */}
                 <AppliedJobTable />
             </div>
-            <UpdateProfileDialog open={open} setOpen={setOpen}/>
+            <UpdateProfileDialog open={open} setOpen={setOpen} />
         </div>
     )
 }
